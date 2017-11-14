@@ -8,36 +8,66 @@
 		"name": "<%= name %>",
 		"email": "<%= email %>",
 		"url": "<%= humanizedWebsite %>"
-	},<% if (cli) { %>
-	"bin": "cli.js",<% } %>
+	},
+	"main": "<%= webpack ? 'lib' : 'src' %>/<%= webpack ? moduleName : 'index.js' %>",
+	<% if (cli) { %>
+	"bin": "cli.js",
+	<% } %>
 	"engines": {
 		"node": ">=4"
 	},
-	"scripts": {
-		"test": "xo && <% if (nyc) { %>nyc <% } %>ava"
+	"scripts": {<% if (webpack) {%>
+		"prepare": "npm run build",
+		"build": "webpack --env build",
+		"dev": "webpack --progress --colors --watch --env dev",<% } %>
+		"prettier": "prettier 'src/**/*.js'",
+		"prettier-watch": "onchange '**/*.js' -- prettier --write {{changed}}",
+		"eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+		"precommit": "lint-staged"<% if (commitizen) { %>,
+		"commit": "git-cz",
+    "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular"<% } %><% if (webpack) { %>,
+		"test": "mocha",
+		"test:watch": "mocha -w"<% } else { %>,
+		"test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 test/*.js",
+		"test:watch": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha -w test/*.js"<% } %><% if (releaseit) { %>,
+		"release": "release-it"<% } %>
 	},
 	"files": [
-		"index.js"<% if (cli) { %>,
-		"cli.js"<% } %>
+		"src/index.js"<% if (cli) { %>,
+		"src/cli.js"<% } %>
 	],
 	"keywords": [<% if (cli) { %>
 		"cli-app",
 		"cli",<% } %>
 		""
 	],
+	"prettier": {
+		"jsxBracketSameLine": true,
+		"semi": true,
+		"singleQuote": true
+	},
+	"lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
 	"dependencies": {<% if (cli) { %>
 		"meow": "^3.7.0"
 	<% } %>},
-	"devDependencies": {
-		"ava": "^0.20.0",<% if (codecov) { %>
-		"codecov": "^2.2.0",<% } %><% if (nyc) { %>
-		"nyc": "^11.0.0",<% } %>
-		"xo": "^0.18.2"
-	}<% if (codecov) { %>,
+	"devDependencies": {}<% if (codecov) { %>,
 	"nyc": {
 		"reporter": [
 			"lcov",
 			"text"
-		]
-	}<% } %>
+		],
+    "require": ["babel-register"],
+    "sourceMap": false,
+    "instrument": false
+	}<% } %><% if (commitizen) {%>,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }<% } %>
 }

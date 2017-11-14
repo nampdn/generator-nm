@@ -1,13 +1,13 @@
 {
-  "name": "generator-nm",
-  "version": "3.5.0",
-  "description": "Scaffold out a node module",
+  "name": "generator-nmlib",
+  "version": "0.0.1",
+  "description": "Scaffold out a node module using webpack, babel, es6.",
   "license": "MIT",
-  "repository": "sindresorhus/generator-nm",
+  "repository": "nampdn/generator-nmlib",
   "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
+    "name": "Nam Pham",
+    "email": "nampdn@protonmail.com",
+    "url": "http://writeforchrist.org"
   },
   "engines": {
     "node": ">=4"
@@ -51,7 +51,9 @@
   },
   "xo": {
     "ignores": [
-      "app/templates/**"
-    ]
+      "app/templates/**",
+      "wallaby.js"
+    ],
+    "space": 2
   }
 }

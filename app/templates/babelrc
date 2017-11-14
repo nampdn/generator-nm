@@ -1,0 +1,19 @@
+{
+  "presets": ["es2015"],
+  "plugins": ["babel-plugin-add-module-exports"],
+  "env": {
+    "test": {
+      "plugins": [
+        [
+          "istanbul",
+          {
+            "exclude": ["**/*.spec.js"]
+          }
+        ]
+      ]
+    }
+  },
+  "sourceMaps": true,
+  "retainLines": true
+}
+

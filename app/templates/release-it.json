@@ -1,0 +1,12 @@
+{
+  "src": {
+    "tagName": "v%s"
+  },
+  "github": {
+    "release": true
+  },
+  "buildCommand": "npm run build",
+  "afterReleaseCommand":
+    "echo Successfully released ${version} to ${dist.repo}.",
+  "assets": "lib/*.js"
+}
